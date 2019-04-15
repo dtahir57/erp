@@ -1,0 +1,2 @@
+{Team} [ManytoMany] {User} [OnetoMany] {Task} [OnetoMany] {TaskComment}
+{Team} [ManytoMany] {User} [OnetoMany] {Post} [OnetoMany] {PostComment}
