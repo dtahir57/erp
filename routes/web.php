@@ -27,3 +27,5 @@ Route::get('/restos/menu/{id}', 'MenuController@index')->name('restos.menu');
 
 Route::get('/teams', 'TeamController@index')->name('teams');
 Route::get('/tasks', 'TaskController@index')->name('tasks');
+
+Route::get('/user_management', 'UserManagement\IndexController@index')->name('user_management.index');

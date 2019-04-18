@@ -12,6 +12,7 @@ Vue.component('menu-container', require('./modules/menu/MenuContainer.vue').defa
 Vue.component('resto-group', require('./modules/restos/RestoGroup.vue').default);
 
 Vue.component('projects-admin', require('./modules/projects/ProjectsAdmin.vue').default);
+Vue.component('user-management', require('./modules/user_management/UserManagement.vue').default);
 
 const app = new Vue({
 	el: '#app'

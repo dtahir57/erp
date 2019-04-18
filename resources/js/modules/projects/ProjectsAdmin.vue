@@ -15,7 +15,7 @@
         <template slot="body">
           <router-view></router-view>
         </template>
-			</card-component>  
+			</card-component>
     </div>
   </div>
 </template>

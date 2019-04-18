@@ -106,6 +106,9 @@
           <li class="nav-item">
             <a href="#" class="nav-link"><i class="fe fe-check-square"></i> Human Resources</a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('user_management.index') }}" class="nav-link"><i class="fe fe-user"></i> User Management</a>
+          </li>
           {{-- <li class="nav-item">
             <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i> Projects</a>
             <div class="dropdown-menu dropdown-menu-arrow">
