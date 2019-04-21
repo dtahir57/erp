@@ -56,14 +56,6 @@
 							<input type="email" name="email" placeholder="Email" v-model="email" class="form-control" />
 						</div>
 						<div class="form-group">
-							<label class="form-label">Password</label>
-							<input type="password" name="password" placeholder="Password" v-model="password" class="form-control" />
-						</div>
-						<div class="form-group">
-							<label class="form-label">Name</label>
-							<input type="password" name="password_confirmation" placeholder="Confirm Password" v-model="password_confirmation" class="form-control" />
-						</div>
-						<div class="form-group">
 							<button class="btn btn-success btn-block" @click="save">Save</button>
 						</div>
 					</div>
@@ -82,8 +74,6 @@ export default {
 			users: [],
 			name: '',
 			email: '',
-			password: '',
-			password_confirmation: '',
 			errors: []
 		}
 	},
@@ -97,14 +87,13 @@ export default {
 				password_confirmation: this.password_confirmation
 			}).then(response => {
 				this.users = response.data
+				this.name = '',
+				this.email = '',
+				this.errors = []
 			}).catch(error => {
 				this.errors = error.response.data.errors
 				console.log(error.response.data.errors)
 			})
-			this.name = '',
-			this.email = '',
-			this.password = '',
-			this.password_confirmation = ''
 		},
 		destroy (id) {
 			let uri = '/api/user/'+id;

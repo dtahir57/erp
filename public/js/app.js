@@ -2939,20 +2939,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'EditUser',
   data: function data() {
     return {
       user: {},
-      password_confirmation: '',
       errors: []
     };
   },
@@ -2963,9 +2954,7 @@ __webpack_require__.r(__webpack_exports__);
       var uri = "/api/user/".concat(this.$route.params.id);
       axios.patch(uri, {
         name: this.user.name,
-        email: this.user.email,
-        password: this.user.password,
-        password_confirmation: this.password_confirmation
+        email: this.user.email
       }).then(function (response) {
         _this.$router.push({
           name: 'User'
@@ -3066,14 +3055,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 // import Base_URL from '../../../api/index.js'
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'User',
@@ -3082,8 +3063,6 @@ __webpack_require__.r(__webpack_exports__);
       users: [],
       name: '',
       email: '',
-      password: '',
-      password_confirmation: '',
       errors: []
     };
   },
@@ -3099,11 +3078,11 @@ __webpack_require__.r(__webpack_exports__);
         password_confirmation: this.password_confirmation
       }).then(function (response) {
         _this.users = response.data;
+        _this.name = '', _this.email = '', _this.errors = [];
       })["catch"](function (error) {
         _this.errors = error.response.data.errors;
         console.log(error.response.data.errors);
       });
-      this.name = '', this.email = '', this.password = '', this.password_confirmation = '';
     },
     destroy: function destroy(id) {
       var _this2 = this;
@@ -23247,68 +23226,6 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
-          _c("label", { staticClass: "form-label" }, [_vm._v("Password")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.user.password,
-                expression: "user.password"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "password",
-              name: "password",
-              placeholder: "Password"
-            },
-            domProps: { value: _vm.user.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.user, "password", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { staticClass: "form-label" }, [
-            _vm._v("Confirm Password")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.password_confirmation,
-                expression: "password_confirmation"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "password",
-              name: "password_confirmation",
-              placeholder: "Confirm Password"
-            },
-            domProps: { value: _vm.password_confirmation },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.password_confirmation = $event.target.value
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
           _c(
             "button",
             { staticClass: "btn btn-success", on: { click: _vm.update } },
@@ -23489,66 +23406,6 @@ var render = function() {
                       return
                     }
                     _vm.email = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [_vm._v("Password")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password,
-                    expression: "password"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "password",
-                  name: "password",
-                  placeholder: "Password"
-                },
-                domProps: { value: _vm.password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [_vm._v("Name")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password_confirmation,
-                    expression: "password_confirmation"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "password",
-                  name: "password_confirmation",
-                  placeholder: "Confirm Password"
-                },
-                domProps: { value: _vm.password_confirmation },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password_confirmation = $event.target.value
                   }
                 }
               })

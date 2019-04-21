@@ -19,14 +19,6 @@
 					<input type="email" name="email" class="form-control" v-model="user.email" placeholder="Email" />
 				</div>
 				<div class="form-group">
-					<label class="form-label">Password</label>
-					<input type="password" name="password" class="form-control" v-model="user.password" placeholder="Password">
-				</div>
-				<div class="form-group">
-					<label class="form-label">Confirm Password</label>
-					<input type="password" name="password_confirmation" class="form-control" v-model="password_confirmation" placeholder="Confirm Password" />
-				</div>
-				<div class="form-group">
 					<button class="btn btn-success" @click="update">Update</button>
 				</div>
 			</div>
@@ -39,7 +31,6 @@ export default {
 	data () {
 		return {
 			user: {},
-			password_confirmation: '',
 			errors: []
 		}
 	},
@@ -49,8 +40,6 @@ export default {
 			axios.patch(uri, {
 				name: this.user.name,
 				email: this.user.email,
-				password: this.user.password,
-				password_confirmation: this.password_confirmation
 			}).then(response => {
 				this.$router.push({ name: 'User' })
 			}).catch(error => {
