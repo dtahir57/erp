@@ -4,6 +4,7 @@ namespace App\Http\Controllers\UserManagement;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
 
 class IndexController extends Controller
 {
@@ -18,7 +19,8 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return view('user_management.index');
+        $role = Role::first();
+        return view('user_management.index', compact('role'));
     }
 
     /**

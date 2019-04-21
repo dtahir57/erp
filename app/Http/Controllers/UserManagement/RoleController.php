@@ -5,6 +5,7 @@ namespace App\Http\Controllers\UserManagement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use App\Http\Requests\RoleRequest;
 use Session;
 
@@ -65,7 +66,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::with('permissions')->findOrFail($id);
         return response()->json([
             'role' => $role
         ]);
@@ -82,6 +83,11 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $role->name = $request->name;
+        if (count($request->permissions) > 0) {
+            $role->syncPermissions($request->permissions);
+        } else {
+            $role->revokePermissionTo(Permission::all());
+        }
         $role->update();
         return response()->json(null, 200);
     }

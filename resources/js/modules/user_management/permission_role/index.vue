@@ -24,10 +24,10 @@
 	    						<tbody>
 	    							<tr v-for="permission in permissions" :key="permission.index">
 	    								<td>{{ permission.name }}</td>
-	    								<td>
-	    									<router-link :to="{ name: 'EditPermission', params: {id: permission.id}}" class="btn btn-success">Edit</router-link>
+	    								<td style="width: 30px;">
+	    									<router-link :to="{ name: 'EditPermission', params: {id: permission.id}}" class="btn btn-success btn-sm">Edit</router-link>
 	    								</td>
-	    								<td><button class="btn btn-danger" @click="deletePermission(permission.id)">Delete</button></td>
+	    								<td style="width: 30px;"><button class="btn btn-danger btn-sm" @click="deletePermission(permission.id)">Delete</button></td>
 	    							</tr>
 	    						</tbody>
 	    					</table>
@@ -48,11 +48,11 @@
         						<tbody>
         							<tr v-for="role in roles" :key="role.index">
         								<td>{{ role.name }}</td>
-        								<td>
-											<router-link :to="{ name: 'EditRole', params: {id: role.id}}" class="btn btn-success">Edit</router-link>
+        								<td style="width: 30px;">
+											<router-link :to="{ name: 'EditRole', params: {id: role.id}}" class="btn btn-success btn-sm">Edit</router-link>
         								</td>
-        								<td>
-											<button class="btn btn-danger" @click="deleteRole(role.id)">Delete</button>
+        								<td style="width: 30px;">
+											<button class="btn btn-danger btn-sm" @click="deleteRole(role.id)">Delete</button>
         								</td>
         							</tr>
         						</tbody>
@@ -101,7 +101,7 @@
 	</div>
 </template>
 <script>
-import Base_URL from '../../../api/index.js'
+// import Base_URL from '../../../api/index.js'
 	export default {
 		name: 'Permission',
 		data () {
@@ -132,7 +132,7 @@ import Base_URL from '../../../api/index.js'
 				} else {
 					this.permission_error = false
 					this.btn_loading = true
-					axios.post(Base_URL+'/api/permission', {
+					axios.post('/api/permission', {
 						name: this.permission_name
 					}).then(response => {
 						this.permissions = response.data
@@ -145,7 +145,7 @@ import Base_URL from '../../../api/index.js'
 				}
 			},
 			deletePermission (id) {
-				let uri = Base_URL+'api/permission/'+id
+				let uri = 'api/permission/'+id
 				axios.delete(uri).then(response => {
 					this.permissions = response.data
 				}).catch(error => {
@@ -155,7 +155,7 @@ import Base_URL from '../../../api/index.js'
 			saveRole () {
 				if (this.role_name) {
 					this.role_error = false
-					axios.post(Base_URL+'api/role', {
+					axios.post('api/role', {
 						name: this.role_name
 					}).then(response => {
 						this.roles = response.data
@@ -168,7 +168,7 @@ import Base_URL from '../../../api/index.js'
 				}
 			},
 			deleteRole (id) {
-				let uri = Base_URL+'api/role/'+id
+				let uri = 'api/role/'+id
 				axios.delete(uri).then(response => {
 					this.roles = response.data
 				}).catch(error => {
@@ -178,13 +178,13 @@ import Base_URL from '../../../api/index.js'
 			}
 		},
 		created () {
-			axios.get(Base_URL+'/api/permissions').then(response => {
+			axios.get('/api/permissions').then(response => {
 				this.permissions = response.data
 			}).catch(error => {
 				console.log(error)
 			});
 
-			axios.get(Base_URL+'/api/roles').then(response => {
+			axios.get('/api/roles').then(response => {
 				this.roles = response.data
 			}).catch(error => {
 				console.log(error)

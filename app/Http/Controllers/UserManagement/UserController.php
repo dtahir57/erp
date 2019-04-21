@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Http\Requests\UserRequest;
 use Hash;
+use Validator;
 
 class UserController extends Controller
 {
@@ -44,6 +45,9 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
+
+        $users = User::latest()->get();
+        return response()->json($users, 201);
     }
 
     /**
@@ -65,7 +69,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return response()->json($user, 200);
     }
 
     /**
@@ -94,5 +99,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
+
+        $users = User::latest()->get();
+        return response()->json($users, 200);
     }
 }

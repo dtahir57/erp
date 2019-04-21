@@ -22,11 +22,11 @@
 										<tr v-for="user in users" :key="user.index">
 											<td>{{ user.name }}</td>
 											<td>{{ user.email }}</td>
-											<td>
+											<td style="width: 30px;">
 												<router-link :to="{ name: 'EditUser', params: {id: user.id} }" class="btn btn-success btn-sm">Edit</router-link>
 											</td>
-											<td>
-												<button class="btn btn-danger btn-sm">Delete</button>
+											<td style="width: 30px;">
+												<button class="btn btn-danger btn-sm" @click="destroy(user.id)">Delete</button>
 											</td>
 										</tr>
 									</tbody>
@@ -42,24 +42,29 @@
 						<h3 class="card-title">Add New User</h3>
 					</div>
 					<div class="card-body">
+						<div v-if="this.errors">
+							<div v-for="error in errors" :key="error.index">
+								<p class="text-danger">{{ error[0] }}</p>
+							</div>
+						</div>
 						<div class="form-group">
 							<label class="form-label">Name</label>
-							<input type="text" name="name" placeholder="Name" class="form-control" />
+							<input type="text" name="name" placeholder="Name" v-model="name" class="form-control" />
 						</div>
 						<div class="form-group">
 							<label class="form-label">Email</label>
-							<input type="email" name="email" placeholder="Email" class="form-control" />
+							<input type="email" name="email" placeholder="Email" v-model="email" class="form-control" />
 						</div>
 						<div class="form-group">
 							<label class="form-label">Password</label>
-							<input type="password" name="password" placeholder="Password" class="form-control" />
+							<input type="password" name="password" placeholder="Password" v-model="password" class="form-control" />
 						</div>
 						<div class="form-group">
 							<label class="form-label">Name</label>
-							<input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control" />
+							<input type="password" name="password_confirmation" placeholder="Confirm Password" v-model="password_confirmation" class="form-control" />
 						</div>
 						<div class="form-group">
-							<button class="btn btn-success btn-block">Save</button>
+							<button class="btn btn-success btn-block" @click="save">Save</button>
 						</div>
 					</div>
 				</div>
@@ -68,17 +73,51 @@
 	</div>
 </template>
 <script>
-import Base_URL from '../../../api/index.js'
+// import Base_URL from '../../../api/index.js'
 
 export default {
 	name: 'User',
 	data () {
 		return {
-			users: []
+			users: [],
+			name: '',
+			email: '',
+			password: '',
+			password_confirmation: '',
+			errors: []
+		}
+	},
+	methods: {
+		save () {
+			let uri = '/api/user';
+			axios.post(uri, {
+				name: this.name,
+				email: this.email,
+				password: this.password,
+				password_confirmation: this.password_confirmation
+			}).then(response => {
+				this.users = response.data
+			}).catch(error => {
+				this.errors = error.response.data.errors
+				console.log(error.response.data.errors)
+			})
+			this.name = '',
+			this.email = '',
+			this.password = '',
+			this.password_confirmation = ''
+		},
+		destroy (id) {
+			let uri = '/api/user/'+id;
+			axios.delete(uri).then(response => {
+				// console.log(response)
+				this.users = response.data
+			}).catch(error => {
+				console.log(error.response.data)
+			}) 
 		}
 	},
 	created () {
-		let uri = Base_URL+'api/users';
+		let uri = '/api/users';
 		axios.get(uri).then(response => {
 			this.users = response.data
 		}).catch(error => {

@@ -13,7 +13,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, HasRoles, HasMediaTrait;
+    use Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.

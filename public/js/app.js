@@ -2522,7 +2522,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _api_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/index.js */ "./resources/js/api/index.js");
 //
 //
 //
@@ -2541,7 +2540,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'EditPermission',
   data: function data() {
@@ -2553,7 +2551,7 @@ __webpack_require__.r(__webpack_exports__);
     updatePermission: function updatePermission() {
       var _this = this;
 
-      var uri = _api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + "api/permission/".concat(this.$route.params.id);
+      var uri = "api/permission/".concat(this.$route.params.id);
       console.log(uri);
       axios.patch(uri, this.permission).then(function (response) {
         _this.$router.push({
@@ -2567,7 +2565,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this2 = this;
 
-    var uri = _api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + "api/permission/".concat(this.$route.params.id, "/edit");
+    var uri = "api/permission/".concat(this.$route.params.id, "/edit");
     axios.get(uri).then(function (response) {
       _this2.permission = response.data.permission;
     })["catch"](function (error) {
@@ -2587,7 +2585,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _api_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/index.js */ "./resources/js/api/index.js");
 //
 //
 //
@@ -2606,35 +2603,86 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import Base_URL from '../../../api/index.js'
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'EditRole',
   data: function data() {
     return {
-      role: {}
+      role: {},
+      permissions: [],
+      permission_array: []
     };
   },
   methods: {
     updateRole: function updateRole() {
       var _this = this;
 
-      var uri = _api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + "api/role/".concat(this.$route.params.id);
+      var uri = "api/role/".concat(this.$route.params.id);
       console.log(uri);
-      axios.patch(uri, this.role).then(function (response) {
+      axios.patch(uri, {
+        name: this.role.name,
+        permissions: this.permission_array
+      }).then(function (response) {
         _this.$router.push({
           name: 'Permission'
         });
       })["catch"](function (error) {
-        console.log(error);
+        console.log(error.response.data);
       });
+    },
+    determinePermissions: function determinePermissions(permission, event, index) {
+      if (event.target.checked) {
+        this.permission_array.push({
+          id: permission.id,
+          name: permission.name,
+          checked: true
+        });
+        console.log('I am checked. ID: ' + permission.id + ' Index: ' + index);
+      } else {
+        for (var i = 0; i < this.permission_array.length; i++) {
+          if (this.permission_array[i].id == permission.id) {
+            console.log(this.permission_array[i]);
+            this.permission_array.splice(i, 1);
+            break;
+          }
+        }
+      }
+    }
+  },
+  computed: {
+    isChecked: function isChecked(permission, role) {
+      for (var i = 0; i < this.role.permissions.length; i++) {
+        if (permission.id === this.role.permissions[i].id) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   },
   created: function created() {
     var _this2 = this;
 
-    var uri = _api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + "api/role/".concat(this.$route.params.id, "/edit");
+    var uri = "api/role/".concat(this.$route.params.id, "/edit");
     axios.get(uri).then(function (response) {
       _this2.role = response.data.role;
+    })["catch"](function (error) {
+      console.log(error);
+    });
+    axios.get('/api/permissions').then(function (response) {
+      _this2.permissions = response.data;
     })["catch"](function (error) {
       console.log(error);
     });
@@ -2652,7 +2700,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _api_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/index.js */ "./resources/js/api/index.js");
 //
 //
 //
@@ -2755,7 +2802,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+// import Base_URL from '../../../api/index.js'
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Permission',
   data: function data() {
@@ -2788,7 +2835,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.permission_error = false;
         this.btn_loading = true;
-        axios.post(_api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + '/api/permission', {
+        axios.post('/api/permission', {
           name: this.permission_name
         }).then(function (response) {
           _this.permissions = response.data;
@@ -2803,7 +2850,7 @@ __webpack_require__.r(__webpack_exports__);
     deletePermission: function deletePermission(id) {
       var _this2 = this;
 
-      var uri = _api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + 'api/permission/' + id;
+      var uri = 'api/permission/' + id;
       axios["delete"](uri).then(function (response) {
         _this2.permissions = response.data;
       })["catch"](function (error) {
@@ -2815,7 +2862,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.role_name) {
         this.role_error = false;
-        axios.post(_api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + 'api/role', {
+        axios.post('api/role', {
           name: this.role_name
         }).then(function (response) {
           _this3.roles = response.data;
@@ -2830,7 +2877,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRole: function deleteRole(id) {
       var _this4 = this;
 
-      var uri = _api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + 'api/role/' + id;
+      var uri = 'api/role/' + id;
       axios["delete"](uri).then(function (response) {
         _this4.roles = response.data;
       })["catch"](function (error) {
@@ -2841,12 +2888,12 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this5 = this;
 
-    axios.get(_api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + '/api/permissions').then(function (response) {
+    axios.get('/api/permissions').then(function (response) {
       _this5.permissions = response.data;
     })["catch"](function (error) {
       console.log(error);
     });
-    axios.get(_api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + '/api/roles').then(function (response) {
+    axios.get('/api/roles').then(function (response) {
       _this5.roles = response.data;
     })["catch"](function (error) {
       console.log(error);
@@ -2870,11 +2917,75 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'EditUser',
   data: function data() {
-    return {// 
+    return {
+      user: {},
+      password_confirmation: '',
+      errors: []
     };
+  },
+  methods: {
+    update: function update() {
+      var _this = this;
+
+      var uri = "/api/user/".concat(this.$route.params.id);
+      axios.patch(uri, {
+        name: this.user.name,
+        email: this.user.email,
+        password: this.user.password,
+        password_confirmation: this.password_confirmation
+      }).then(function (response) {
+        _this.$router.push({
+          name: 'User'
+        });
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+        console.log(error.response.data.errors);
+      });
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    var uri = "/api/user/".concat(this.$route.params.id, "/edit");
+    axios.get(uri).then(function (response) {
+      console.log(response.data);
+      _this2.user = response.data;
+    })["catch"](function (error) {
+      console.log(error.response);
+    });
   }
 });
 
@@ -2889,7 +3000,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _api_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/index.js */ "./resources/js/api/index.js");
 //
 //
 //
@@ -2959,20 +3069,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+// import Base_URL from '../../../api/index.js'
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'User',
   data: function data() {
     return {
-      users: []
+      users: [],
+      name: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
+      errors: []
     };
   },
-  created: function created() {
-    var _this = this;
+  methods: {
+    save: function save() {
+      var _this = this;
 
-    var uri = _api_index_js__WEBPACK_IMPORTED_MODULE_0__["default"] + 'api/users';
+      var uri = '/api/user';
+      axios.post(uri, {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.password_confirmation
+      }).then(function (response) {
+        _this.users = response.data;
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+        console.log(error.response.data.errors);
+      });
+      this.name = '', this.email = '', this.password = '', this.password_confirmation = '';
+    },
+    destroy: function destroy(id) {
+      var _this2 = this;
+
+      var uri = '/api/user/' + id;
+      axios["delete"](uri).then(function (response) {
+        // console.log(response)
+        _this2.users = response.data;
+      })["catch"](function (error) {
+        console.log(error.response.data);
+      });
+    }
+  },
+  created: function created() {
+    var _this3 = this;
+
+    var uri = '/api/users';
     axios.get(uri).then(function (response) {
-      _this.users = response.data;
+      _this3.users = response.data;
     })["catch"](function (error) {
       console.log(error);
     });
@@ -22501,6 +22651,42 @@ var render = function() {
           })
         ]),
         _vm._v(" "),
+        _c("h4", [_vm._v("List Of Assigned Permissions")]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "row" },
+          _vm._l(_vm.permissions, function(permission, index) {
+            return _c("div", { key: permission.index, staticClass: "col-3" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { staticClass: "colorinput" }, [
+                  _c("input", {
+                    staticClass: "colorinput-input",
+                    attrs: { name: "permissions[]", type: "checkbox" },
+                    on: {
+                      click: function($event) {
+                        return _vm.determinePermissions(
+                          permission,
+                          $event,
+                          index
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "colorinput-color bg-lime" }),
+                  _vm._v(
+                    "\n\t\t\t\t\t\t\t" +
+                      _vm._s(permission.name) +
+                      "\n\t\t\t\t\t\t"
+                  )
+                ])
+              ])
+            ])
+          }),
+          0
+        ),
+        _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
           _c(
             "button",
@@ -22608,11 +22794,12 @@ var render = function() {
                             _vm._v(" "),
                             _c(
                               "td",
+                              { staticStyle: { width: "30px" } },
                               [
                                 _c(
                                   "router-link",
                                   {
-                                    staticClass: "btn btn-success",
+                                    staticClass: "btn btn-success btn-sm",
                                     attrs: {
                                       to: {
                                         name: "EditPermission",
@@ -22626,11 +22813,11 @@ var render = function() {
                               1
                             ),
                             _vm._v(" "),
-                            _c("td", [
+                            _c("td", { staticStyle: { width: "30px" } }, [
                               _c(
                                 "button",
                                 {
-                                  staticClass: "btn btn-danger",
+                                  staticClass: "btn btn-danger btn-sm",
                                   on: {
                                     click: function($event) {
                                       return _vm.deletePermission(permission.id)
@@ -22684,11 +22871,12 @@ var render = function() {
                             _vm._v(" "),
                             _c(
                               "td",
+                              { staticStyle: { width: "30px" } },
                               [
                                 _c(
                                   "router-link",
                                   {
-                                    staticClass: "btn btn-success",
+                                    staticClass: "btn btn-success btn-sm",
                                     attrs: {
                                       to: {
                                         name: "EditRole",
@@ -22702,11 +22890,11 @@ var render = function() {
                               1
                             ),
                             _vm._v(" "),
-                            _c("td", [
+                            _c("td", { staticStyle: { width: "30px" } }, [
                               _c(
                                 "button",
                                 {
-                                  staticClass: "btn btn-danger",
+                                  staticClass: "btn btn-danger btn-sm",
                                   on: {
                                     click: function($event) {
                                       return _vm.deleteRole(role.id)
@@ -22987,9 +23175,160 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "editUser" })
+  return _c("div", { staticClass: "editUser" }, [
+    _c("div", { staticClass: "card" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        this.errors
+          ? _c(
+              "div",
+              _vm._l(_vm.errors, function(error) {
+                return _c("div", { key: error.index }, [
+                  _c("p", { staticClass: "text-danger" }, [
+                    _vm._v(_vm._s(error[0]))
+                  ])
+                ])
+              }),
+              0
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { staticClass: "form-label" }, [_vm._v("Name")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.name,
+                expression: "user.name"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "name", placeholder: "Name" },
+            domProps: { value: _vm.user.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "name", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { staticClass: "form-label" }, [_vm._v("Email")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.email,
+                expression: "user.email"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "email", name: "email", placeholder: "Email" },
+            domProps: { value: _vm.user.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "email", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { staticClass: "form-label" }, [_vm._v("Password")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.password,
+                expression: "user.password"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              name: "password",
+              placeholder: "Password"
+            },
+            domProps: { value: _vm.user.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "password", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { staticClass: "form-label" }, [
+            _vm._v("Confirm Password")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password_confirmation,
+                expression: "password_confirmation"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              name: "password_confirmation",
+              placeholder: "Confirm Password"
+            },
+            domProps: { value: _vm.password_confirmation },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.password_confirmation = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-success", on: { click: _vm.update } },
+            [_vm._v("Update")]
+          )
+        ])
+      ])
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Edit User")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -23039,6 +23378,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "td",
+                            { staticStyle: { width: "30px" } },
                             [
                               _c(
                                 "router-link",
@@ -23057,7 +23397,20 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
-                          _vm._m(2, true)
+                          _c("td", { staticStyle: { width: "30px" } }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.destroy(user.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("Delete")]
+                            )
+                          ])
                         ])
                       }),
                       0
@@ -23070,7 +23423,150 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(3)
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "card" }, [
+          _vm._m(2),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            this.errors
+              ? _c(
+                  "div",
+                  _vm._l(_vm.errors, function(error) {
+                    return _c("div", { key: error.index }, [
+                      _c("p", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(error[0]))
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { staticClass: "form-label" }, [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.name,
+                    expression: "name"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", name: "name", placeholder: "Name" },
+                domProps: { value: _vm.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.name = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { staticClass: "form-label" }, [_vm._v("Email")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.email,
+                    expression: "email"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "email", name: "email", placeholder: "Email" },
+                domProps: { value: _vm.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.email = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { staticClass: "form-label" }, [_vm._v("Password")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.password,
+                    expression: "password"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "password",
+                  name: "password",
+                  placeholder: "Password"
+                },
+                domProps: { value: _vm.password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.password = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { staticClass: "form-label" }, [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.password_confirmation,
+                    expression: "password_confirmation"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "password",
+                  name: "password_confirmation",
+                  placeholder: "Confirm Password"
+                },
+                domProps: { value: _vm.password_confirmation },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.password_confirmation = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success btn-block",
+                  on: { click: _vm.save }
+                },
+                [_vm._v("Save")]
+              )
+            ])
+          ])
+        ])
+      ])
     ])
   ])
 }
@@ -23103,72 +23599,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-danger btn-sm" }, [_vm._v("Delete")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h3", { staticClass: "card-title" }, [_vm._v("Add New User")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [_vm._v("Name")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "text", name: "name", placeholder: "Name" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [_vm._v("Email")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "email", name: "email", placeholder: "Email" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [_vm._v("Password")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "password",
-                name: "password",
-                placeholder: "Password"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [_vm._v("Name")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "password",
-                name: "password_confirmation",
-                placeholder: "Confirm Password"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("button", { staticClass: "btn btn-success btn-block" }, [
-              _vm._v("Save")
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Add New User")])
     ])
   }
 ]
@@ -38036,20 +38468,6 @@ module.exports = function(module) {
 	return module;
 };
 
-
-/***/ }),
-
-/***/ "./resources/js/api/index.js":
-/*!***********************************!*\
-  !*** ./resources/js/api/index.js ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-var Base_URL = 'http://localhost:8000/';
-/* harmony default export */ __webpack_exports__["default"] = (Base_URL);
 
 /***/ }),
 

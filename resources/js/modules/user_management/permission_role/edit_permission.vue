@@ -17,7 +17,7 @@
 	</div>
 </template>
 <script>
-import Base_URL from '../../../api/index.js'
+
 export default {
 	name: 'EditPermission',
 	data () {
@@ -27,7 +27,7 @@ export default {
 	},
 	methods: {
 		updatePermission () {
-			let uri = Base_URL+`api/permission/${this.$route.params.id}`;
+			let uri = `api/permission/${this.$route.params.id}`;
 			console.log(uri)
 			axios.patch(uri, this.permission).then(response => {
 				this.$router.push({ name: 'Permission' });
@@ -37,7 +37,7 @@ export default {
 		}
 	},
 	created() {
-		let uri = Base_URL+`api/permission/${this.$route.params.id}/edit`;
+		let uri = `api/permission/${this.$route.params.id}/edit`;
 		axios.get(uri).then(response => {
 			this.permission = response.data.permission
 		}).catch(error => {

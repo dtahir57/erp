@@ -12,7 +12,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 
 Route::post('item/save', 'MenuController@saveMenuItem');
 
-// Route::group(['prefix' => '/admin', 'middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'cors'], function () {
 	/**
 	 * PermissionController routes starts here
 	 */
@@ -43,7 +43,11 @@ Route::post('item/save', 'MenuController@saveMenuItem');
 	 * UserController Routes starts from here
 	 */
 	Route::get('/users', 'UserManagement\UserController@index')->name('user.index');
+	Route::post('/user', 'UserManagement\UserController@store');
+	Route::get('/user/{id}/edit', 'UserManagement\UserController@edit');
+	Route::patch('/user/{id}', 'UserManagement\UserController@update');
+	Route::delete('/user/{id}', 'UserManagement\UserController@destroy');
 	/**
 	 * UserController Routes  ends here
 	 */
-// });
+});
