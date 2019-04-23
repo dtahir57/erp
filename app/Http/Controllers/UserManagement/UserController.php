@@ -58,7 +58,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return response()->json($user, 200);
     }
 
     /**
@@ -86,6 +87,8 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->update();
+
+        return $this->index();
     }
 
     /**

@@ -45,6 +45,7 @@ Route::group(['middleware' => 'cors'], function () {
 	Route::get('/users', 'UserManagement\UserController@index')->name('user.index');
 	Route::post('/user', 'UserManagement\UserController@store');
 	Route::get('/user/{id}/edit', 'UserManagement\UserController@edit');
+	Route::get('/user/{id}', 'UserManagement\UserController@show');
 	Route::patch('/user/{id}', 'UserManagement\UserController@update');
 	Route::delete('/user/{id}', 'UserManagement\UserController@destroy');
 	/**

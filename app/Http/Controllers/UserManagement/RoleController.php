@@ -83,13 +83,15 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $role->name = $request->name;
-        if (count($request->permissions) > 0) {
-            $role->syncPermissions($request->permissions);
-        } else {
-            $role->revokePermissionTo(Permission::all());
-        }
+        // if (count($request->permissions) > 0) {
+        //     $role->syncPermissions($request->permissions);
+        // } else {
+        //     $role->revokePermissionTo(Permission::all());
+        // }
         $role->update();
-        return response()->json(null, 200);
+        
+        $roles = Role::latest()->get();
+        return response()->json($roles, 200);
     }
 
     /**

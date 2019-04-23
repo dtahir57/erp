@@ -86,7 +86,8 @@ class PermissionController extends Controller
         $permission->name = $request->name;
         $permission->update();
 
-        return response()->json(null, 200);
+        $permissions = Permission::latest()->get();
+        return response()->json($permissions, 201);
     }
 
     /**

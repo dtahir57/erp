@@ -23,21 +23,42 @@
 											<td>{{ user.name }}</td>
 											<td>{{ user.email }}</td>
 											<td style="width: 30px;">
-												<router-link :to="{ name: 'EditUser', params: {id: user.id} }" class="btn btn-success btn-sm">Edit</router-link>
+												<button class="btn btn-success btn-sm" @click="editUser(user.id)">Edit</button>
 											</td>
 											<td style="width: 30px;">
-												<button class="btn btn-danger btn-sm" @click="destroy(user.id)">Delete</button>
+												<button class="btn btn-danger btn-sm" @click="getUser(user.id)" data-toggle="modal" data-target="#deleteUserModal">Delete</button>
 											</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
+							<!-- Modal Starts Here -->
+							<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							        <h5>Are you sure you want to delete this User?</h5>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							        <button type="button" class="btn btn-danger" @click="destroy(get_user.id)" data-dismiss="modal">OK</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							<!-- Modal Ends Here -->
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="card">
+				<div class="card" v-show="!is_edit_mode">
 					<div class="card-header">
 						<h3 class="card-title">Add New User</h3>
 					</div>
@@ -59,7 +80,30 @@
 							<button class="btn btn-success btn-block" @click="save">Save</button>
 						</div>
 					</div>
-				</div>
+				</div> <!-- /.card -->
+				<div class="card" v-show="is_edit_mode">
+					<div class="card-header">
+						<h3 class="card-title">Edit User</h3>
+					</div>
+					<div class="card-body">
+						<div v-if="this.errors">
+							<div v-for="error in errors" :key="error.index">
+								<p class="text-danger">{{ error[0] }}</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="form-label">Name</label>
+							<input type="text" name="name" placeholder="Name" v-model="user.name" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label class="form-label">Email</label>
+							<input type="email" name="email" placeholder="Email" v-model="user.email" class="form-control" />
+						</div>
+						<div class="form-group">
+							<button class="btn btn-success btn-block" @click="update(user.id)">Update</button>
+						</div>
+					</div>
+				</div> <!-- /.card -->
 			</div>
 		</div>
 	</div>
@@ -74,7 +118,10 @@ export default {
 			users: [],
 			name: '',
 			email: '',
-			errors: []
+			errors: [],
+			is_edit_mode: false,
+			user: {},
+			get_user: {}
 		}
 	},
 	methods: {
@@ -103,6 +150,37 @@ export default {
 			}).catch(error => {
 				console.log(error.response.data)
 			}) 
+		},
+		editUser (id) {
+			this.is_edit_mode = true
+			let uri = '/api/user/'+id+'/edit';
+			axios.get(uri).then(response => {
+				console.log(response.data)
+				this.user = response.data
+			}).catch(error => {
+				console.log(error.response.data)
+			})
+		},
+		getUser(id) {
+			let uri = '/api/user/'+id;
+			axios.get(uri).then(response => {
+				this.get_user = response.data
+			}).catch(error => {
+				console.log(error.response)
+			})
+		},
+		update (id) {
+			let uri = '/api/user/'+id;
+			axios.patch(uri, {
+				name: this.user.name,
+				email: this.user.email,
+			}).then(response => {
+				this.users = response.data
+			}).catch(error => {
+				this.errors = error.response.data.errors
+				console.log(error.response.data.errors)
+			})
+			this.is_edit_mode = false
 		}
 	},
 	created () {
