@@ -8,6 +8,8 @@ use App\User;
 use App\Http\Requests\UserRequest;
 use Hash;
 use Validator;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -59,7 +61,14 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return response()->json($user, 200);
+        $permissions = $user->getPermissionNames();
+        $roles = $user->getRoleNames();
+        return response()->json([
+            'user' => $user,
+            'permissions' => $permissions,
+            'roles' => $roles,
+            'code' => 200
+        ]);
     }
 
     /**
@@ -104,5 +113,27 @@ class UserController extends Controller
 
         $users = User::latest()->get();
         return response()->json($users, 200);
+    }
+
+    public function assignPermissions(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if (count($request->permissions) > 0) {
+            $user->syncPermissions($request->permissions);
+        } else {
+            $user->revokePermissionTo(Permission::all());
+        }
+        $user->update();
+    }
+
+    public function assignRoles(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if (count($request->roles) > 0) {
+            $user->syncRoles($request->roles);
+        } else {
+            $user->revokeRoleTo(Role::all());
+        }
+        $user->update();
     }
 }

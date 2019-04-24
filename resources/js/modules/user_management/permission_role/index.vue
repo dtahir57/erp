@@ -64,6 +64,7 @@
         								<td>Role Name</td>
         								<td>Edit</td>
         								<td>Delete</td>
+        								<th class="text-center"><i class="icon-settings"></i></th>
         							</tr>
         						</thead>
         						<tbody>
@@ -74,6 +75,14 @@
         								</td>
         								<td style="width: 30px;">
 											<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteRoleModal" @click="getRole(role.id)">Delete</button>
+        								</td>
+        								<td style="width: 30px;">
+        									<div class="item-action dropdown">
+        										<a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
+        										<div class="dropdown-menu dropdown-menu-right">
+        											<router-link :to="{ name: 'AssignPermission', params: {id: role.id}}" class="dropdown-item"><i class="dropdown-icon fe fe-tag"></i> Assign Permissions </router-link>
+        										</div>
+        									</div>
         								</td>
         							</tr>
         						</tbody>
@@ -355,7 +364,7 @@
 			axios.get('/api/roles').then(response => {
 				this.roles = response.data
 			}).catch(error => {
-				console.log(error)
+				console.log(error.response.data)
 			});
 		}
 	}

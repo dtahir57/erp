@@ -55,7 +55,13 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $permissions = $role->getPermissionNames();
+        return response()->json([
+            'role' => $role,
+            'permissions' => $permissions,
+            'code' => 200
+        ]);
     }
 
     /**
@@ -83,11 +89,6 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $role->name = $request->name;
-        // if (count($request->permissions) > 0) {
-        //     $role->syncPermissions($request->permissions);
-        // } else {
-        //     $role->revokePermissionTo(Permission::all());
-        // }
         $role->update();
         
         $roles = Role::latest()->get();
@@ -106,5 +107,16 @@ class RoleController extends Controller
         $role->delete();
         $roles = Role::latest()->get();
         return response()->json($roles, 200);
+    }
+
+    public function assignPermissions(Request $request, $id)
+    {
+        $role = Role::findOrFail($id);
+        if (count($request->permissions) > 0) {
+            $role->syncPermissions($request->permissions);
+        } else {
+            $role->revokePermissionTo(Permission::all());
+        }
+        $role->update();
     }
 }

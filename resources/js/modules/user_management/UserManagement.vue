@@ -45,6 +45,21 @@ const routes = [
     path: '/user/edit/:id',
     name: 'EditUser',
     component: require('./user/edit').default
+  },
+  {
+    path: '/role/:id',
+    name: 'AssignPermission',
+    component: require('./permission_role/AssignPermission.vue').default
+  },
+  {
+    path: '/user/assign_permissions/:id',
+    name: 'AssignPermissions',
+    component: require('./user/AssignPermission.vue').default
+  },
+  {
+    path: '/user/assign_roles/:id',
+    name: 'AssignRole',
+    component: require('./user/AssignRole.vue').default
   }
 ]  
 

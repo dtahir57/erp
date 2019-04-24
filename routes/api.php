@@ -32,6 +32,8 @@ Route::group(['middleware' => 'cors'], function () {
 	Route::get('/roles', 'UserManagement\RoleController@index')->name('role.index');
 	Route::get('/role/create', 'UserManagement\RoleController@create')->name('role.create');
 	Route::post('/role', 'UserManagement\RoleController@store')->name('role.store');
+	Route::get('/role/{id}', 'UserManagement\RoleController@show');
+	Route::post('/role/assign_permissions/{id}', 'UserManagement\RoleController@assignPermissions');
 	Route::get('/role/{id}/edit', 'UserManagement\RoleController@edit')->name('role.edit');
 	Route::patch('/role/{id}', 'UserManagement\RoleController@update')->name('role.update');
 	Route::delete('/role/{id}', 'UserManagement\RoleController@destroy')->name('role.destroy');
@@ -46,6 +48,8 @@ Route::group(['middleware' => 'cors'], function () {
 	Route::post('/user', 'UserManagement\UserController@store');
 	Route::get('/user/{id}/edit', 'UserManagement\UserController@edit');
 	Route::get('/user/{id}', 'UserManagement\UserController@show');
+	Route::post('/user/assign_permissions/{id}', 'UserManagement\UserController@assignPermissions');
+	Route::post('/user/assign_roles/{id}', 'UserManagement\UserController@assignRoles');
 	Route::patch('/user/{id}', 'UserManagement\UserController@update');
 	Route::delete('/user/{id}', 'UserManagement\UserController@destroy');
 	/**
