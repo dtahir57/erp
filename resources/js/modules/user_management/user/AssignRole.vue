@@ -4,9 +4,36 @@
 			<div class="row">
 				<multiselect v-model="assigned_roles" :options="roles" :multiple="true"></multiselect>
 			</div>
+			<br>
 			<div class="form-group">
 				<button class="btn btn-success" @click="assignRoles(user.id)">Update</button>
 			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">All Roles</h3>
+						</div>
+						<div class="card-body">
+							<ul>
+								<li v-for="(role, index) in roles" :key="index">{{ role }}</li>
+							</ul>
+						</div>
+					</div> <!-- /.card -->
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">Assigned Roles</h3>
+						</div>
+						<div class="card-body">
+							<ul>
+								<li v-for="(role, index) in assigned_roles" :key="index">{{ role }}</li>
+							</ul>
+						</div>
+					</div> <!-- /.card -->
+				</div>
+			</div> <!-- /.row -->
 		</div>
 	</div>
 </template>

@@ -5,9 +5,36 @@
 			<div class="row">
 				<multiselect v-model="assigned_permissions" :options="permissions" :multiple="true"></multiselect>
 			</div>
+			<br>
 			<div class="form-group">
 				<button class="btn btn-success" @click="assignPermissions(user.id)">Update</button>
 			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">All Permissions</h3>
+						</div>
+						<div class="card-body">
+							<ul>
+								<li v-for="(permission, index) in permissions" :key="index">{{ permission }}</li>
+							</ul>
+						</div>
+					</div> <!-- /.card -->
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">Assigned Permissions</h3>
+						</div>
+						<div class="card-body">
+							<ul>
+								<li v-for="(permission, index) in assigned_permissions" :key="index">{{ permission }}</li>
+							</ul>
+						</div>
+					</div> <!-- /.card -->
+				</div>
+			</div> <!-- /.row -->
 		</div>
 	</div>
 </template>
