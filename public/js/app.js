@@ -3223,16 +3223,39 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'AssignUser',
+  components: {
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
   data: function data() {
-    return {// 
+    return {
+      team: {},
+      users: []
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    var uri = "/api/team/".concat(this.$route.params.id);
+    axios.get(uri).then(function (response) {
+      _this.team = response.data;
+    })["catch"](function (error) {
+      console.log(error.response);
+    });
+    axios.get('/api/users').then(function (response) {
+      _this.users = response.data;
+    })["catch"](function (error) {
+      console.log(error.response.data);
+    });
   }
 });
 
@@ -24606,7 +24629,7 @@ var render = function() {
                                     _c("i", {
                                       staticClass: "dropdown-icon fe fe-users"
                                     }),
-                                    _vm._v(" Assign Users ")
+                                    _vm._v(" Add Users ")
                                   ]
                                 )
                               ],

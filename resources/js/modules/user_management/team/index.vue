@@ -32,7 +32,7 @@
         									<div class="item-action dropdown">
         										<a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
         										<div class="dropdown-menu dropdown-menu-right">
-        											<router-link :to="{ name: 'AssignUser', params: {id: team.id}}" class="dropdown-item"><i class="dropdown-icon fe fe-users"></i> Assign Users </router-link>
+        											<router-link :to="{ name: 'AssignUser', params: {id: team.id}}" class="dropdown-item"><i class="dropdown-icon fe fe-users"></i> Add Users </router-link>
         										</div>
         									</div>
         								</td>
