@@ -6,7 +6,7 @@
         <template slot="options">
           <router-link class="btn btn-primary btn-sm" to="/">Role & Permission</router-link>
           <router-link class="btn btn-primary btn-sm ml-2" to="/users">Users</router-link>
-          <router-link class="btn btn-primary btn-sm ml-2" to="/posts">Teams</router-link>
+          <router-link class="btn btn-primary btn-sm ml-2" to="/teams">Teams</router-link>
         </template>
         <template slot="body">
           <router-view></router-view>
@@ -60,6 +60,16 @@ const routes = [
     path: '/user/assign_roles/:id',
     name: 'AssignRole',
     component: require('./user/AssignRole.vue').default
+  },
+  {
+    path: '/teams',
+    name: 'Team',
+    component: require('./team/index.vue').default
+  },
+  {
+    path: '/teams/assign_users/:id',
+    name: 'AssignUser',
+    component: require('./team/AssignUser.vue').default
   }
 ]  
 

@@ -55,4 +55,14 @@ Route::group(['middleware' => 'cors'], function () {
 	/**
 	 * UserController Routes  ends here
 	 */
+	
+	/**
+	 * TeamController Rotues Starts From Here
+	 */
+	Route::get('/teams', 'UserManagement\TeamController@index');
+	Route::post('/team', 'UserManagement\TeamController@store');
+	Route::get('/team/{id}', 'UserManagement\TeamController@show');
+	Route::get('/team/{id}/edit', 'UserManagement\TeamController@edit');
+	Route::patch('/team/{id}', 'UserManagement\TeamController@update');
+	Route::delete('/team/{id}', 'UserManagement\TeamController@destroy');
 });
