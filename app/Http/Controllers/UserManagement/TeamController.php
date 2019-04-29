@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
 use App\Http\Requests\TeamRequest;
+use App\User;
 
 class TeamController extends Controller
 {
@@ -55,7 +56,11 @@ class TeamController extends Controller
     public function show($id)
     {
         $team = Team::findOrFail($id);
-        return response()->json($team, 200);
+        return response()->json([
+            'team' => $team,
+            'users' => $team->users->pluck('name'),
+            'code' => 200
+        ]);
     }
 
     /**
@@ -102,5 +107,17 @@ class TeamController extends Controller
         $team->delete();
 
         return $this->index();
+    }
+
+    public function addUsers(Request $request, $id)
+    {
+        $users_array = [];
+        foreach($request->users as $user) {
+            $getUser = User::where('name', $user)->first();
+            array_push($users_array, $getUser->id);
+        }
+        $team = Team::findOrFail($id);
+        $team->users()->sync( $users_array );
+        return response()->json(null, 200);
     }
 }

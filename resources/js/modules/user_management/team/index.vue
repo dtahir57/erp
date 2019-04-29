@@ -147,7 +147,8 @@ export default {
 		getTeam (id) {
 			let uri = '/api/team/'+id;
 			axios.get(uri).then(response => {
-				this.team = response.data
+				console.log(response.data)
+				this.team = response.data.team
 			}).catch(error => {
 				console.log(error.response.data)
 			})

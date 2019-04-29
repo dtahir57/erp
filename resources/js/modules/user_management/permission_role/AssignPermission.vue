@@ -11,7 +11,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-6">
-					<div class="card">
+					<div class="card custom_card_style">
 						<div class="card-header">
 							<h3 class="card-title">All Permissions</h3>
 						</div>
@@ -23,7 +23,7 @@
 					</div> <!-- /.card -->
 				</div>
 				<div class="col-md-6">
-					<div class="card">
+					<div class="card custom_card_style">
 						<div class="card-header">
 							<h3 class="card-title">Assigned Permissions</h3>
 						</div>
@@ -83,3 +83,22 @@ export default {
 	}
 }
 </script>
+<style>
+.custom_card_style {
+	max-height: 400px;
+	overflow-y: auto;
+}
+.custom_card_style ul {
+	list-style-type: none;
+	padding: 0;
+}
+.custom_card_style ul li {
+	width: 100%;
+	padding: 5px;
+	color: #000;
+}
+.custom_card_style ul li:hover {
+	background: #f2f4f7;
+	cursor: pointer;
+}
+</style>
